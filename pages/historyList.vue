@@ -1,18 +1,15 @@
 <template>
 	<view>
-		<headerBar id="header" title="礼品兑换" color="#fff"></headerBar>
+		<headerBar id="header" title="购买记录" color="#fff"></headerBar>
 		<view class="list">
-			<view class="item" v-for="(item,index) in list" :key="index" @click="exchange(item)">
+			<view class="item" v-for="(item,index) in list" :key="index">
 				<image class="img" :src="item.gi_cover_absolute_path" mode="aspectFill"></image>
 				<view class="info">
 					<view class="title">{{item.gi_name}}</view>
-					<view class="text overflow">{{item.gi_description}}</view>
-					<view class="cost">
-						<view class="price">库存<text>{{item.gi_number}}</text></view>
-						<view class="coin">
-							<text>{{item.gi_gold}}</text>
-							<image class="icon" src="/static/coin.png"></image>
-						</view>
+					<view class="text overflow">{{item.time}}</view>
+					<view class="coin">
+						<view>-{{item.gr_gift_gold}}</view>
+						<image class="icon" src="/static/coin.png"></image>
 					</view>
 				</view>
 			</view>
@@ -49,18 +46,9 @@
 			common.loading()
 		},
 		methods: {
-			exchange(item){
-				if(item.gi_gold > this.coins){
-					common.toast('金币不足')
-					return false
-				}
-				uni.navigateTo({
-					url: `addressList?giftId=${item.gi_id}`
-				})
-			},
 			getList(){
 				common.ajax({
-					url: 'User/getGiftList',
+					url: 'User/getGiftRecordList',
 					showLoading: false,
 					data: {
 						page: this.page,
@@ -105,37 +93,17 @@
 					font-size: 22rpx;
 					color: #999;
 				}
-				.cost{
-					margin-top: 40rpx;
+				.coin{
+					height: 60rpx;
 					display: flex;
-					justify-content: space-between;
+					justify-content: flex-start;
 					align-items: center;
-					.price{
-						font-size: 24rpx;
-						height: 50rpx;
-						color: #bbb;
-						display: flex;
-						align-items: center;
-						text{
-							font-size: 36rpx;
-							color: #FF2942;
-							margin-left: 10rpx;
-						}
-					}
-					.coin{
-						width: 128rpx;
-						height: 48rpx;
-						display: flex;
-						justify-content: center;
-						align-items: center;
-						background: url(/static/btnLine.png);
-						background-size: 100% 100%;
-						text{font-size: 24rpx}
-						image{
-							width: 36rpx;
-							height: 36rpx;
-							margin-left: 8rpx;
-						}
+					margin-top: 30rpx;
+					&>view{font-size: 36rpx;}
+					.icon{
+						width: 36rpx;
+						height: 36rpx;
+						margin-left: 15rpx;
 					}
 				}
 			}

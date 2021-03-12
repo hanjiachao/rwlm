@@ -68,6 +68,9 @@
 				})
 			},
 			confirmExchange(id){
+				if(!this.giftId){
+					return false
+				}
 				uni.showModal({
 					content: '确定使用该地址兑换礼品吗？',
 					success: res => {

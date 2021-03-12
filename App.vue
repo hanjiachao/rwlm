@@ -10,7 +10,7 @@
 				showLoading: false,
 				success: res => {
 					let status = res.list.us_is_white == '是'
-					uni.setStorageSync('isWhite',status)
+					uni.setStorageSync('isVip',status)
 				}
 			})
 		},

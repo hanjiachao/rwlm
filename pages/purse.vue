@@ -198,7 +198,7 @@
 				.icon{
 					width: 36rpx;
 					height: 36rpx;
-					margin-left: 20rpx;
+					margin-left: 15rpx;
 				}
 			}
 		}

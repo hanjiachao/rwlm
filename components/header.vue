@@ -25,17 +25,36 @@
 		},
 		data() {
 			return {
-				showBack: false
+				showBack: false,
+				back: 1,
+				isLoginPage: false
 			}
 		},
 		mounted() {
-			if(getCurrentPages().length > 1){
+			let pages = getCurrentPages()
+			let page = pages[pages.length - 1]
+			let isLoginPage = page.route == 'pages/wxLogin'
+			if(isLoginPage || pages.length > 1){
+				this.isLoginPage = isLoginPage
 				this.showBack = true
 			}
 		},
 		methods:{
 			goBack(){
-				uni.navigateBack()
+				let pages = getCurrentPages()
+				if(this.isLoginPage){
+					if(pages.length > 2){
+						uni.navigateBack({
+							delta: 2
+						})
+					}else{
+						uni.switchTab({
+							url: 'index'
+						})
+					}
+				}else{
+					uni.navigateBack()
+				}
 			}
 		}
 	}

@@ -1,43 +1,7 @@
 <template>
 	<view>
-		<headerBar id="header" title="首页"></headerBar>
-		<image class="pageBg" src="/static/bg.png"></image>
-		<input class="search" disabled confirm-type="search" placeholder="请输入商品名称" @click="goList"/>
-		<swiper class="banner" autoplay circular indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
-			<swiper-item v-for="(item,index) in banner" :key="index" @click="goBanner(item)">
-				<image :src="item.ba_absolute_path" mode="aspectFill"></image>
-			</swiper-item>
-		</swiper>
-		<view class="recommend">
-			<view class="title">
-				<image class="titleBg" src="/static/titleBg.png"></image>
-				<view class="text">
-					<view class="line"></view>
-					<view>今日爆款推荐</view>
-					<view>产品推荐 创新无限</view>
-				</view>
-			</view>
-			<view class="list">
-				<view class="item" v-for="(item,index) in recommendList" :key="index" @click="goDetail(item)">
-					<image class="img" :src="item.go_cover_absolute_path" mode="aspectFill"></image>
-					<view class="info">
-						<view class="title overflow">精选羊肉物美价廉精选羊肉物美价廉</view>
-						<view class="cost">
-							<view class="price">￥<text>{{item.go_price}}</text></view>
-							<view class="coin">
-								<text>可得金币</text>
-								<text>+{{item.go_gold}}</text>
-								<image class="icon" src="/static/coin.png"></image>
-							</view>
-						</view>
-						<view class="commission">
-							<text>佣金：{{item.go_commission}}元</text>
-							<text>佣金比例：{{parseFloat(item.go_commission_ratio)}}%</text>
-						</view>
-					</view>
-				</view>
-			</view>
-		</view>
+		<headerBar id="header" title="列表"></headerBar>
+		<input class="search" confirm-type="search" v-model="search" placeholder="请输入商品名称" @confirm="refreshList"/>
 		<view class="product">
 			<scroll-view class="navList" scroll-x :scroll-into-view="`nav${navIndex}`" scroll-with-animation>
 				<view class="item" :class="navIndex != index || 'active'" :id="`nav${index}`" v-for="(item,index) in navList" :key="index" @click="changeNav(index)">{{item.ca_name}}</view>
@@ -88,7 +52,7 @@
 				refresh: true,
 				video: '',
 				showVideo: false,
-				searchStyle: ''
+				search: ''
 			}
 		},
 		onReachBottom(){
@@ -97,11 +61,13 @@
 			}
 		},
 		onLoad() {
-			this.getFirst()
+			this.getNav()
 		},
 		methods: {
-			stopMove(){
-				return false
+			checkLogin(){
+				uni.redirectTo({
+					url: 'login'
+				})
 			},
 			hideLogin(){
 				this.showLogin = false
@@ -109,37 +75,6 @@
 			changeNav(index){
 				this.navIndex = index
 				this.refreshList()
-			},
-			goList(){
-				uni.navigateTo({
-					url: 'list'
-				})
-			},
-			goBanner(item){
-				// if(!uni.getStorageSync('isWhite')){
-				// 	common.toast('您现在暂时没有体验权限哦！')
-				// 	return false
-				// }
-				uni.navigateTo({
-					url: `detail?id=${item.ba_good_id}`
-				})
-			},
-			getFirst(){
-				common.ajax({
-					url: 'Index/getHomeData',
-					data: {
-						type: '产品',
-						limit: this.limit
-					},
-					success: res => {
-						this.banner = res.banner
-						this.navList = res.cate
-						this.recommendList = res.label
-						this.list = res.good
-						this.page = 2
-						this.refresh = res.good.length == this.limit
-					}
-				})
 			},
 			getNav(){
 				common.ajax({
@@ -163,7 +98,8 @@
 						type: '产品',
 						cate_id: this.navList[this.navIndex].ca_id,
 						page: this.page,
-						limit: this.limit
+						limit: this.limit,
+						skey: this.search
 					},
 					success: res => {
 						this.list = this.page == 1 ? res.list : this.list.concat(res.list)
@@ -197,6 +133,10 @@
 				this.showVideo = e.detail.fullScreen
 			},
 			goLink(item){
+				// if(!uni.getStorageSync('isWhite')){
+				// 	common.toast('您现在暂时没有体验权限哦！')
+				// 	return false
+				// }
 				uni.showActionSheet({
 					itemList: ['打电话','复制微信'],
 					success: res => {
@@ -232,7 +172,7 @@
 	}
 	.search{
 		background: #fff;
-		margin: 0 30rpx;
+		margin: 20rpx 30rpx;
 		padding: 0 30rpx;
 		height: 60rpx;
 		line-height: 60rpx;

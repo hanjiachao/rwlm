@@ -30,15 +30,13 @@ export default class common {
 						params.success(res.data.result)
 					}else{
 						if(res.data.errorCode == '100008'){
-							common.toast(uni.getStorageSync('token'))
+							uni.clearStorageSync('token')
 							if(uni.getStorageSync('token')){
 								// token过期
 							}else if(uni.getStorageSync('userInfo')){
 								// 注册
 							}
-							uni.navigateTo({
-								url: 'wxLogin'
-							})
+							common.goLogin()
 							return false
 						}
 						if(params.fail){
@@ -66,20 +64,19 @@ export default class common {
 		})
 	}
 	
-	static checkLogin() {
-		let isLogin = uni.getStorageSync('token') ? true : false
-		if(!isLogin){
+	static getToken() {
+		let token = uni.getStorageSync('token')
+		if(!token){
 			// #ifdef MP-WEIXIN
-			uni.navigateTo({
-				url: 'wxLogin'
-			})
+			common.goLogin()
 			// #endif
 			// #ifdef APP-PLUS
-			uni.setStorageSync('token','2e806879a68ddc382356147b1d7522cc')
-			isLogin = true
+			token = '2e806879a68ddc382356147b1d7522cc'
+			uni.setStorageSync('token',token)
 			// #endif
+			return false
 		}
-		return isLogin
+		return token
 	}
 	
 	static toast(title, icon) {
@@ -98,5 +95,15 @@ export default class common {
 	static checkMobile(mobile) {
 		let reg = /^[1][3,4,5,7,8,9][0-9]{9}$/
 		return reg.test(mobile)
+	}
+	
+	static goLogin() {
+		uni.navigateTo({
+			url: 'wxLogin'
+		})
+	}
+	
+	static getAjaxUrl() {
+		return ajaxUrl
 	}
 }

@@ -1,5 +1,6 @@
 <template>
 	<view class="page">
+		<headerBar id="header" :showBg="false"></headerBar>
 		<image class="bg" src="/static/loginBg.png"></image>
 		<view class="login">
 			<image class="loginBg" src="/static/frameBg.png"></image>
@@ -19,7 +20,11 @@
 
 <script>
 	import common from '@/utils/common'
+	import header from '@/components/header'
 	export default {
+		components: {
+			headerBar: header
+		},
 		data() {
 			return {
 				step: uni.getStorageSync('userInfo') ? 2 : 1
@@ -81,11 +86,13 @@
 						openid: uni.getStorageSync('openId'),
 						mobile: uni.getStorageSync('mobile'),
 						nickname: uni.getStorageSync('userInfo').nickName,
-						headimg: uni.getStorageSync('userInfo').avatarUrl,
-						invite_code: uni.getStorageSync('inviteCode')
+						headimg: uni.getStorageSync('userInfo').avatarUrl
 					},
 					success: res => {
 						uni.setStorageSync('token',res.access_token)
+						let pages = getCurrentPages()
+						let page = pages[pages.length - 2]
+						page.onLoad()
 						uni.navigateBack()
 					}
 				})

@@ -1,7 +1,7 @@
 {
 	"pages": [
 		{"path": "pages/index"},
-		{"path": "pages/login"},
+		{"path": "pages/bindCode"},
 		{"path": "pages/course"},
 		{"path": "pages/vip"},
 		{"path": "pages/personal"},
@@ -11,8 +11,12 @@
 		{"path": "pages/taskList"},
 		{"path": "pages/editAddress"},
 		{"path": "pages/addressList"},
+		{"path": "pages/list"},
 		{"path": "pages/detail"},
-		{"path": "pages/wxLogin"}
+		{"path": "pages/wxLogin"},
+		{"path": "pages/suggestion"},
+		{"path": "pages/questionList"},
+		{"path": "pages/historyList"}
 	],
 	"tabBar": {
 		"color": "#222",

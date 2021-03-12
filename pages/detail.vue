@@ -1,33 +1,35 @@
 <template>
 	<view>
 		<headerBar id="header" title="详情页"></headerBar>
-		<swiper autoplay circular indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
-			<swiper-item v-for="(item,index) in detail.banner" :key="index">
-				<image :src="item.gi_absolute_path" mode="aspectFill"></image>
-			</swiper-item>
-		</swiper>
-		<view class="info" v-if="showPage">
-			<view class="title">{{detail.go_name}}</view>
-			<view class="text">
-				<view class="price">¥<text>{{detail.go_price}}</text></view>
-				<view class="cost">
-					<view>可得金币</view>
-					<view>+{{detail.go_gold}}</view>
-					<image class="icon" src="/static/coin.png"></image>
+		<block v-if="showPage">
+			<swiper autoplay circular indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
+				<swiper-item v-for="(item,index) in detail.banner" :key="index">
+					<image :src="item.gi_absolute_path" mode="aspectFill"></image>
+				</swiper-item>
+			</swiper>
+			<view class="info">
+				<view class="title">{{detail.go_name}}</view>
+				<view class="text">
+					<view class="price">¥<text>{{detail.go_price}}</text></view>
+					<view class="cost">
+						<view>可得金币</view>
+						<view>+{{detail.go_gold}}</view>
+						<image class="icon" src="/static/coin.png"></image>
+					</view>
 				</view>
 			</view>
-		</view>
-		<view class="row" @click="goVideo">
-			<image class="icon" src="/static/video.png" mode="widthFix"></image>
-			<text>视频素材</text>
-			<image class="arrow" src="/static/right.png"></image>
-		</view>
-		<view class="detail">
-			<view class="title">商品详情</view>
-			<image class="img" :src="item.gi_absolute_path" v-for="(item,index) in detail.good_detail" :key="index" @click="preview(item.gi_absolute_path)"></image>
-			<!-- <u-parse :content="richText" :imageProp="{mode: 'widthFix'}"></u-parse> -->
-		</view>
-		<view class="btn" @click="copy">复制链接</view>
+			<view class="row" @click="goVideo">
+				<image class="icon" src="/static/video.png" mode="widthFix"></image>
+				<text>视频素材</text>
+				<image class="arrow" src="/static/right.png"></image>
+			</view>
+			<view class="detail">
+				<view class="title">商品详情</view>
+				<image class="img" :src="item.gi_absolute_path" v-for="(item,index) in detail.good_detail" :key="index" @click="preview(item.gi_absolute_path)"></image>
+				<!-- <u-parse :content="richText" :imageProp="{mode: 'widthFix'}"></u-parse> -->
+			</view>
+			<view class="btn" @click="copy">复制链接</view>
+		</block>
 	</view>
 </template>
 
@@ -49,7 +51,9 @@
 			}
 		},
 		onLoad(options) {
-			this.id = options.id
+			if(options){
+				this.id = options.id
+			}
 			this.getDetail()
 		},
 		methods: {
@@ -66,7 +70,10 @@
 				})
 			},
 			goVideo(){
-				if(!common.checkLogin()){
+				if(!uni.getStorageSync('isVip')){
+					uni.navigateTo({
+						url: 'bindCode'
+					})
 					return false
 				}
 				uni.navigateTo({

@@ -2,11 +2,12 @@
 	<view>
 		<headerBar id="header" title="教程"></headerBar>
 		<view class="page">
+			<image class="banner" :src="banner" mode="widthFix"></image>
 			<scroll-view class="navList" scroll-x :scroll-into-view="`nav${navIndex}`" scroll-with-animation>
-				<view class="item" :class="navIndex != index || 'active'" :id="`nav${index}`" v-for="(item,index) in navList" :key="index" @click="changeNav(index)">{{item.ca_name}}</view>
+				<view class="item" :class="navIndex != index || 'active'" :id="`nav${index}`" v-for="(item,index) in navList" :key="index" @click="changeNav(index)">{{item}}</view>
 			</scroll-view>
 			<view class="list">
-				<view class="item" v-for="(item,index) in list" :key="index" @click="play(item.go_absolute_path)">
+				<view class="item" v-for="(item,index) in list" :key="index" @click="confirmPlay(item)">
 					<view class="imgContent">
 						<image class="img" :src="item.go_cover_absolute_path" mode="aspectFill"></image>
 						<image class="play" src="/static/play.png"></image>
@@ -34,9 +35,10 @@
 		},
 		data() {
 			return {
-				navList: [],
+				banner: '',
+				navList: ['必学','进阶','高阶'],
 				navIndex: 0,
-				list: [1,1,1,1,1],
+				list: [],
 				page: 1,
 				limit: 10,
 				refresh: true,
@@ -50,14 +52,36 @@
 			}
 		},
 		onLoad() {
-			this.getNav()
+			this.getBanner()
+			this.getList()
 		},
 		methods: {
-			play(video){
-				if(!common.checkLogin()){
+			confirmPlay(item){
+				if(!common.getToken()){
 					return false
 				}
-				this.video = video
+				if(this.navIndex == 1 && item.change_status == '未兑换'){
+					uni.showModal({
+						title: '提示',
+						content: `确定要消耗${item.go_gold}积分观看该课程吗？`,
+						success: res => {
+							if(res.confirm){
+								this.buyCourse(item.go_id)
+							}
+						}
+					})
+					return false
+				}
+				if(this.navIndex == 2 && !uni.getStorageSync('isVip')){
+					uni.navigateTo({
+						url: 'bindCode'
+					})
+					return false
+				}
+				this.video = item.go_absolute_path
+				this.play()
+			},
+			play(){
 				this.showVideo = true
 				this.videoContext = uni.createVideoContext('video',this)
 				this.videoContext.requestFullScreen()
@@ -70,16 +94,26 @@
 				this.navIndex = index
 				this.refreshList()
 			},
-			getNav(){
+			buyCourse(id){
 				common.ajax({
-					url: 'Index/getCateList',
+					url: 'Index/exchangeAdvanceGood',
 					data: {
-						type: '教程',
-						limit: this.limit
+						go_id: id
 					},
 					success: res => {
-						this.navList = res.cate_list
-						this.list = res.good_list
+						this.play()
+						this.refreshList()
+					}
+				})
+			},
+			getBanner(){
+				common.ajax({
+					url: 'Index/getBannerPath',
+					data: {
+						type: '教程'
+					},
+					success: res => {
+						this.banner = res.banner
 					}
 				})
 			},
@@ -87,8 +121,7 @@
 				common.ajax({
 					url: 'Index/getGoodList',
 					data: {
-						type: '教程',
-						cate_id: this.navList[this.navIndex].ca_id,
+						type: `${this.navList[this.navIndex]}教程`,
 						page: this.page,
 						limit: this.limit
 					},
@@ -114,9 +147,10 @@
 		background: #fff;
 		border-top-left-radius: 20rpx;
 		border-top-right-radius: 20rpx;
+		.banner{width: 100%}
 		.navList{
-			position: fixed;
-			top: calc(var(--status-bar-height) + 85rpx);
+			// position: fixed;
+			// top: calc(var(--status-bar-height) + 85rpx);
 			background: #fff;
 			white-space: nowrap;
 			z-index: 10000;
@@ -144,7 +178,7 @@
 			}
 		}
 		.list{
-			padding-top: 80rpx;
+			// padding-top: 80rpx;
 			.item{
 				padding: 20rpx 30rpx;
 				display: flex;
