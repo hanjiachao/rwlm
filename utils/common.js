@@ -97,6 +97,16 @@ export default class common {
 		return reg.test(mobile)
 	}
 	
+	static checkVip() {
+		let isVip = uni.getStorageSync('isVip')
+		if(!isVip){
+			uni.navigateTo({
+				url: 'bindCode'
+			})
+		}
+		return isVip
+	}
+	
 	static goLogin() {
 		uni.navigateTo({
 			url: 'wxLogin'

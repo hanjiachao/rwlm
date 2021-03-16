@@ -8,7 +8,7 @@
 				<image :src="item.ba_absolute_path" mode="aspectFill"></image>
 			</swiper-item>
 		</swiper>
-		<view class="recommend">
+		<view class="recommend" v-if="recommendList.length">
 			<view class="title">
 				<image class="titleBg" src="/static/titleBg.png"></image>
 				<view class="text">
@@ -38,7 +38,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="product">
+		<view class="product" v-if="list.length">
 			<scroll-view class="navList" scroll-x :scroll-into-view="`nav${navIndex}`" scroll-with-animation>
 				<view class="item" :class="navIndex != index || 'active'" :id="`nav${index}`" v-for="(item,index) in navList" :key="index" @click="changeNav(index)">{{item.ca_name}}</view>
 			</scroll-view>
@@ -100,12 +100,6 @@
 			this.getFirst()
 		},
 		methods: {
-			stopMove(){
-				return false
-			},
-			hideLogin(){
-				this.showLogin = false
-			},
 			changeNav(index){
 				this.navIndex = index
 				this.refreshList()

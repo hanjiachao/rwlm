@@ -70,10 +70,13 @@
 				})
 			},
 			goVideo(){
-				if(!uni.getStorageSync('isVip')){
-					uni.navigateTo({
-						url: 'bindCode'
-					})
+				// if(!uni.getStorageSync('isVip')){
+				// 	uni.navigateTo({
+				// 		url: 'bindCode'
+				// 	})
+				// 	return false
+				// }
+				if(!common.checkVip()){
 					return false
 				}
 				uni.navigateTo({

@@ -72,11 +72,16 @@
 					})
 					return false
 				}
-				if(this.navIndex == 2 && !uni.getStorageSync('isVip')){
-					uni.navigateTo({
-						url: 'bindCode'
-					})
-					return false
+				// if(this.navIndex == 2 && !uni.getStorageSync('isVip')){
+				// 	uni.navigateTo({
+				// 		url: 'bindCode'
+				// 	})
+				// 	return false
+				// }
+				if(this.navIndex == 2){
+					if(!common.checkVip()){
+						return false
+					}
 				}
 				this.video = item.go_absolute_path
 				this.play()
