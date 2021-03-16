@@ -28,25 +28,6 @@
 						</view>
 					</view>
 				</view>
-				<view class="item" v-for="(item,index) in list" :key="index" @click="goDetail(item)">
-					<image class="img" :src="item.go_cover_absolute_path" mode="aspectFill"></image>
-					<view class="info">
-						<view class="title">{{item.go_name}}</view>
-						<view class="text overflow">提供全套家政服务和一对一管家</view>
-						<view class="cost">
-							<view class="price">￥<text>{{item.go_price}}</text></view>
-							<view class="coin">
-								<text>可得金币</text>
-								<text>+{{item.go_gold}}</text>
-								<image class="icon" src="/static/coin.png"></image>
-							</view>
-						</view>
-						<view class="commission">
-							<text>佣金：{{item.go_commission}}元</text>
-							<text>佣金比例：{{parseFloat(item.go_commission_ratio)}}%</text>
-						</view>
-					</view>
-				</view>
 			</view>
 		</view>
 		<video id="video" :src="video" v-if="showVideo" @fullscreenchange="hideVideo" @ended="showVideo = false"></video>
