@@ -124,6 +124,7 @@
 </script>
 
 <style lang="less">
+	page{padding-bottom: 5rpx}
 	.row{
 		background: #fff;
 		padding: 10rpx 30rpx 25rpx;
@@ -211,7 +212,7 @@
 	.submit{
 		background: #d6d8e7;
 		color: #fff;
-		margin: 60rpx 30rpx 30rpx;
+		margin: 30rpx;
 		line-height: 80rpx;
 		text-align: center;
 		font-size: 28rpx;

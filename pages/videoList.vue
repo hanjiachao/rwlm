@@ -114,9 +114,6 @@
 						if(res.errMsg == 'saveVideoToPhotosAlbum:fail auth deny'){
 							common.toast('保存失败,请在设置中打开相册权限')
 						}
-					},
-					complete: res => {
-						uni.hideLoading()
 					}
 				})
 			}

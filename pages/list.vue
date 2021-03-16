@@ -1,12 +1,33 @@
 <template>
 	<view>
 		<headerBar id="header" title="列表"></headerBar>
-		<input class="search" confirm-type="search" v-model="search" placeholder="请输入商品名称" @confirm="refreshList"/>
-		<view class="product">
+		<view class="searchContent">
+			<input class="search" confirm-type="search" v-model="search" placeholder="请输入商品名称" @confirm="refreshList"/>
 			<scroll-view class="navList" scroll-x :scroll-into-view="`nav${navIndex}`" scroll-with-animation>
 				<view class="item" :class="navIndex != index || 'active'" :id="`nav${index}`" v-for="(item,index) in navList" :key="index" @click="changeNav(index)">{{item.ca_name}}</view>
 			</scroll-view>
-			<view class="list">
+		</view>
+		<view class="product">
+			<view class="list" v-if="list.length">
+				<view class="item" v-for="(item,index) in list" :key="index" @click="goDetail(item)">
+					<image class="img" :src="item.go_cover_absolute_path" mode="aspectFill"></image>
+					<view class="info">
+						<view class="title">{{item.go_name}}</view>
+						<view class="text overflow">提供全套家政服务和一对一管家</view>
+						<view class="cost">
+							<view class="price">￥<text>{{item.go_price}}</text></view>
+							<view class="coin">
+								<text>可得金币</text>
+								<text>+{{item.go_gold}}</text>
+								<image class="icon" src="/static/coin.png"></image>
+							</view>
+						</view>
+						<view class="commission">
+							<text>佣金：{{item.go_commission}}元</text>
+							<text>佣金比例：{{parseFloat(item.go_commission_ratio)}}%</text>
+						</view>
+					</view>
+				</view>
 				<view class="item" v-for="(item,index) in list" :key="index" @click="goDetail(item)">
 					<image class="img" :src="item.go_cover_absolute_path" mode="aspectFill"></image>
 					<view class="info">
@@ -170,138 +191,21 @@
 		height: 100%;
 		z-index: -2;
 	}
-	.search{
+	.searchContent{
+		width: 100%;
+		padding-top: 20rpx;
 		background: #fff;
-		margin: 20rpx 30rpx;
-		padding: 0 30rpx;
-		height: 60rpx;
-		line-height: 60rpx;
-		border-radius: 30rpx;
-		box-sizing: border-box;
-	}
-	.banner{
-		width: 700rpx;
-		height: 300rpx;
-		margin: 30rpx auto;
-		border-radius: 20rpx;
-		overflow: hidden;
-		transform: translateY(0);
-		swiper-item{
-			image{
-				width: 100%;
-				height: 100%;
-			}
+		position: fixed;
+		left: 0;
+		top: calc(var(--status-bar-height) + 85rpx);
+		.search{
+			background: #eee;
+			margin: 0 30rpx;
+			padding: 0 30rpx;
+			height: 60rpx;
+			line-height: 60rpx;
+			border-radius: 30rpx;
 		}
-	}
-	.recommend{
-		border-bottom: 20rpx solid #E7E6EB;
-		&>.title{
-			position: relative;
-			height: 100rpx;
-			.titleBg{
-				width: 100%;
-				height: 100%;
-			}
-			.text{
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				left: 0;
-				top: 0;
-				display: flex;
-				justify-content: flex-start;
-				align-items: center;
-				z-index: 1;
-				.line{
-					width: 10rpx;
-					height: 36rpx;
-					border-radius: 5rpx;
-					background: #fff;
-					margin-left: 25rpx;
-				}
-				&>view{
-					color: #fff;
-					&:nth-child(2){
-						margin-left: 20rpx;
-						font-size: 32rpx;
-						font-weight: bold;
-					}
-					&:nth-child(3){
-						margin-left: 30rpx;
-						font-size: 24rpx;
-					}
-				}
-			}
-		}
-		.list{
-			padding: 30rpx 25rpx 10rpx;
-			background: #fff;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			flex-wrap: wrap;
-			.item{
-				width: 48%;
-				margin-bottom: 30rpx;
-				box-shadow: 4rpx 5rpx 12rpx 0 rgba(0, 0, 0, 0.21);
-				border-radius: 10rpx;
-				overflow: hidden;
-				.img{
-					width: 100%;
-					height: 250rpx;
-				}
-				.info{
-					padding: 15rpx 20rpx 25rpx;
-					.title{
-						font-size: 30rpx;
-						line-height: 50rpx;
-						font-weight: bold;
-					}
-					.cost{
-						display: flex;
-						justify-content: space-between;
-						align-items: center;
-						.price{
-							font-size: 20rpx;
-							color: #FF2942;
-							text{font-size: 32rpx}
-						}
-						.coin{
-							height: 50rpx;
-							display: flex;
-							justify-content: center;
-							align-items: center;
-							text{
-								&:nth-child(1){
-									font-size: 16rpx;
-									color: #999;
-								}
-								&:nth-child(2){
-									font-size: 26rpx;
-									margin: 0 8rpx;
-								}
-							}
-							image{
-								width: 30rpx;
-								height: 30rpx;
-							}
-						}
-					}
-					.commission{
-						color: #555;
-						font-size: 18rpx;
-						margin-top: 10rpx;
-						text{
-							&:nth-child(1){margin-right: 20rpx}
-						}
-					}
-				}
-			}
-		}
-	}
-	.product{
-		padding-top: 10rpx;
-		background: #fff;
 		.navList{
 			white-space: nowrap;
 			.item{
@@ -327,7 +231,11 @@
 				}
 			}
 		}
+	}
+	.product{
+		background: #fff;
 		.list{
+			padding-top: 165rpx;
 			padding-bottom: 20rpx;
 			.item{
 				padding: 20rpx 30rpx;
