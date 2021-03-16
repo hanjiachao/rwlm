@@ -176,7 +176,6 @@
 			}
 		}
 		.list{
-			// padding-top: 80rpx;
 			.item{
 				padding: 20rpx 30rpx;
 				display: flex;
