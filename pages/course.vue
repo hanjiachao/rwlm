@@ -149,8 +149,6 @@
 		border-top-right-radius: 20rpx;
 		.banner{width: 100%}
 		.navList{
-			// position: fixed;
-			// top: calc(var(--status-bar-height) + 85rpx);
 			background: #fff;
 			white-space: nowrap;
 			z-index: 10000;
