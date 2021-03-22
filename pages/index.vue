@@ -38,7 +38,15 @@
 				</view>
 			</view>
 		</view>
-		<view class="product" v-if="list.length">
+		<view class="product">
+			<view class="title">
+				<image class="titleBg" src="/static/titleBg.png"></image>
+				<view class="text">
+					<view class="line"></view>
+					<view>优选好货</view>
+					<view>平台优选 带货无忧</view>
+				</view>
+			</view>
 			<scroll-view class="navList" scroll-x :scroll-into-view="`nav${navIndex}`" scroll-with-animation>
 				<view class="item" :class="navIndex != index || 'active'" :id="`nav${index}`" v-for="(item,index) in navList" :key="index" @click="changeNav(index)">{{item.ca_name}}</view>
 			</scroll-view>
@@ -247,8 +255,7 @@
 			}
 		}
 	}
-	.recommend{
-		border-bottom: 20rpx solid #E7E6EB;
+	.recommend,.product{
 		&>.title{
 			position: relative;
 			height: 100rpx;
@@ -287,6 +294,9 @@
 				}
 			}
 		}
+	}
+	.recommend{
+		border-bottom: 20rpx solid #E7E6EB;
 		.list{
 			padding: 30rpx 25rpx 10rpx;
 			background: #fff;
@@ -355,9 +365,10 @@
 	}
 	.product{
 		padding-top: 10rpx;
-		background: #fff;
+		background: #e7e6eb;
 		.navList{
 			white-space: nowrap;
+			background: #fff;
 			.item{
 				display: inline-block;
 				font-size: 28rpx;
@@ -382,6 +393,7 @@
 			}
 		}
 		.list{
+			background: #fff;
 			padding-bottom: 20rpx;
 			.item{
 				padding: 20rpx 30rpx;
