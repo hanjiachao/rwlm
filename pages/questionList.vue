@@ -4,7 +4,7 @@
 		<view class="list">
 			<view class="item" :class="{'active': questionIndex == index}" v-for="(item,index) in list" :key="index" @click="changeIndex(index)">
 				<view class="title">{{item.ar_title}}</view>
-				<view class="info" v-if="questionIndex == index">{{item.ar_content}}</view>
+				<view class="info" v-if="questionIndex == index" @click.stop>{{item.ar_content}}</view>
 			</view>
 		</view>
 	</view>

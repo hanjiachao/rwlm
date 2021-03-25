@@ -47,12 +47,14 @@
 			this.getList()
 		},
 		onLoad(options) {
+			common.loading()
 			this.giftId = options.giftId
 		},
 		methods: {
 			getList(){
 				common.ajax({
 					url: 'User/getUserAddressList',
+					showLoading: false,
 					data: {
 						page: this.page,
 						limit: this.limit
