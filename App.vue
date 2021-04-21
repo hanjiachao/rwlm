@@ -15,10 +15,18 @@
 			})
 		},
 		onShow: function() {
-			
+			this.getVersion()
 		},
-		onHide: function() {
-			
+		methods: {
+			getVersion(){
+				common.ajax({
+					url: 'Index/getVersionNumber',
+					showLoading: false,
+					success: res => {
+						uni.setStorageSync('isVerify',res.version == 'v1.0.0')
+					}
+				})
+			}
 		}
 	}
 </script>

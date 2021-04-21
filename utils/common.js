@@ -1,4 +1,5 @@
-const ajaxUrl = 'http://renwulianmeng.haozhicheng.weyoui.cn/index.php/Home/'
+// const ajaxUrl = 'http://renwulianmeng.haozhicheng.weyoui.cn/index.php/Home/'
+const ajaxUrl = 'https://renwulianmeng.pangukj.com/index.php/Home/'
 
 export default class common {
 	static ajax(params) {

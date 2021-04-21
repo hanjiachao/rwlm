@@ -1,5 +1,5 @@
 <template>
-	<view class="header" :class="!showBg || 'bg'">
+	<view class="header" :class="{'bg': showBg,'android': isAndroid}">
 		<view class="statusBar"></view>
 		<image class="back" src="/static/back.png" v-if="showBack" @click="goBack"></image>
 		<view class="text" :style="'color:' + color">{{title}}</view>
@@ -27,10 +27,12 @@
 			return {
 				showBack: false,
 				back: 1,
-				isLoginPage: false
+				isLoginPage: false,
+				isAndroid: false
 			}
 		},
 		mounted() {
+			this.isAndroid = uni.getSystemInfoSync().platform === 'android'
 			let pages = getCurrentPages()
 			let page = pages[pages.length - 1]
 			let isLoginPage = page.route == 'pages/wxLogin'
@@ -63,11 +65,17 @@
 <style lang="less" scoped>
 	.header{
 		padding-bottom: 15rpx;
+		&.android{
+			padding-bottom: 5rpx;
+			.statusBar{padding-top: 20rpx}
+		}
 		&.bg{
 			background: url(/static/headerBg.png);
 			background-size: 100% auto;
 		}
-		.statusBar{height: var(--status-bar-height)}
+		.statusBar{
+			height: var(--status-bar-height);
+		}
 		.back{
 			position: absolute;
 			width: 36rpx;

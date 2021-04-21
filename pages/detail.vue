@@ -18,7 +18,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="row" @click="goVideo">
+			<view class="row" @click="goVideo" v-if="isVerify">
 				<image class="icon" src="/static/video.png" mode="widthFix"></image>
 				<text>视频素材</text>
 				<image class="arrow" src="/static/right.png"></image>
@@ -47,7 +47,8 @@
 				id: '',
 				detail: '',
 				richText: '<p>123</p><img src="https://img-cdn-tc.dcloud.net.cn/uploads/avatar/001/67/43/81_avatar_max.jpg">',
-				showPage: false
+				showPage: false,
+				isVerify: uni.getStorageSync('isVerify')
 			}
 		},
 		onLoad(options) {

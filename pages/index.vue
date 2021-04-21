@@ -38,7 +38,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="product">
+		<view class="product" v-if="navList.length">
 			<view class="title">
 				<image class="titleBg" src="/static/titleBg.png"></image>
 				<view class="text">
@@ -234,7 +234,7 @@
 	}
 	.search{
 		background: #fff;
-		margin: 0 30rpx;
+		margin: 10rpx 30rpx 0;
 		padding: 0 30rpx;
 		height: 60rpx;
 		line-height: 60rpx;

@@ -1,28 +1,71 @@
 <template>
 	<view>
 		<headerBar id="header" title="教程"></headerBar>
-		<view class="page">
-			<image class="banner" :src="banner" mode="widthFix"></image>
-			<scroll-view class="navList" scroll-x :scroll-into-view="`nav${navIndex}`" scroll-with-animation>
-				<view class="item" :class="navIndex != index || 'active'" :id="`nav${index}`" v-for="(item,index) in navList" :key="index" @click="changeNav(index)">{{item}}</view>
-			</scroll-view>
-			<view class="list">
-				<view class="item" v-for="(item,index) in list" :key="index" @click="confirmPlay(item)">
-					<view class="imgContent">
-						<image class="img" :src="item.go_cover_absolute_path" mode="aspectFill"></image>
-						<image class="play" src="/static/play.png"></image>
-					</view>
-					<view class="info">
-						<view class="title">{{item.go_name}}</view>
-						<view class="text overflow">{{item.go_description}}</view>
-						<view class="btn">
-							<view class="text">点击观看</view>
+		<block v-if="isVerify">
+			<view class="page">
+				<image class="banner" :src="banner" mode="widthFix"></image>
+				<scroll-view class="navList" scroll-x :scroll-into-view="`nav${navIndex}`" scroll-with-animation>
+					<view class="item" :class="navIndex != index || 'active'" :id="`nav${index}`" v-for="(item,index) in navList" :key="index" @click="changeNav(index)">{{item}}</view>
+				</scroll-view>
+				<view class="list">
+					<view class="item" v-for="(item,index) in list" :key="index" @click="confirmPlay(item)">
+						<view class="imgContent">
+							<image class="img" :src="item.go_cover_absolute_path" mode="aspectFill"></image>
+							<image class="play" src="/static/play.png"></image>
+						</view>
+						<view class="info">
+							<view class="title">{{item.go_name}}</view>
+							<view class="text overflow">{{item.go_description}}</view>
+							<view class="btn">
+								<view class="text">点击观看</view>
+							</view>
 						</view>
 					</view>
 				</view>
 			</view>
+			<video id="video" :src="video" v-if="showVideo" @fullscreenchange="hideVideo" @ended="showVideo = false"></video>
+		</block>
+		<view class="richText" v-else>
+			<view>新手入门</view>
+			<view>“悦货小程序”使用必听课。（讲述小程序的板块内容，介绍使用“悦货APP” 创作发布视频？介绍使用后达人获得的利益）</view>
+			<view>“疫后”新商机在哪里？（主要讲述当下的商业环境，悦货可以带来的新的商业模式。）</view>
+			<view>没有团队如何做好抖音？</view>
+			<view>成长进阶</view>
+			<view>如何给账号做定位？</view>
+			<view>如何发布带商品的视频？</view>
+			<view>抖音小店、橱窗和小黄车的区别在哪里？分别需要怎样开通？</view>
+			<view>作品如何上热门提升播放量？</view>
+			<view>超级短视频标题撰写技巧？（1）什么是短视频标题；（2）短视频标题的作用是什么？（3）提升短视频标题的技巧有哪些？</view>
+			<view>如何打造账号的垂直度？</view>
+			<view>如何提高与粉丝之间的粘性？</view>
+			<view>抖音账号评论区如何运营？（1）为什么要运营评论区（2）常见的运营方式：见好就赞；反复疑问；热点追踪；引导互动。</view>
+			<view>介绍“剪映”的功能与使用技巧？</view>
+			<view>如何使用“剪映”做出卡点视频？</view>
+			<view>如何使用“剪映”剪辑同款视频？</view>
+			<view>如何使用“剪映”拍摄同款热门视频？</view>
+			<view>如何通过“剪映”添加特效，制作成多重效果的视频？</view>
+			<view>如何通过”剪映”制作平行世界特效?</view>
+			<view>如何通过”剪映”制作卡拉OK视频字幕？</view>
+			<view>“绿幕抠像”到底是如何完成的？教你如何使用 PR 完成。</view>
+			<view>如何从 0 到 1 搭建一个短视频团队？</view>
+			<view>高级研修</view>
+			<view>如何打造账号的带货标签？</view>
+			<view>如何开通和使用商品分享功能？开通步骤和条件满足，添加商品。</view>
+			<view>带货账号如何起号与包装能快速开播？</view>
+			<view>如何开通直播带货功能？</view>
+			<view>直播带货需要准备哪些设备？</view>
+			<view>带货直播运营的禁忌与雷区规避？</view>
+			<view>抖音直播带货的常见技巧有哪些？</view>
+			<view>如何获得直播间的流量？</view>
+			<view>主播能力如何提升？</view>
+			<view>如何写好直播脚本？</view>
+			<view>如何提升直播间流量与转化率？</view>
+			<view>直播带货设备环境如何搭建？（1）空间布置；（2）灯光布置；（3）道具准备如何利用 DOU+投放精准带货？</view>
+			<view>带货主播人设如何打造？（1）为什么要做主播人设定位？（2）人设定位五部曲。（3）成功主播人设案例拆解及定位建议（4）如何让人设深入人心。</view>
+			<view>从 0 到 1 搭建一场直播带货需要准备哪些工作？“人、货、场”分别指什么？人（有人设、能说、懂货），货（选品、价格、买赠活动），场（直播间场景和氛围）。</view>
+			<view>直播的开播时长和频次有何规率？</view>
+			<view>如何设计一场具有吸引力的直播？</view>
 		</view>
-		<video id="video" :src="video" v-if="showVideo" @fullscreenchange="hideVideo" @ended="showVideo = false"></video>
 	</view>
 </template>
 
@@ -43,7 +86,8 @@
 				limit: 10,
 				refresh: true,
 				video: '',
-				showVideo: false
+				showVideo: false,
+				isVerify: uni.getStorageSync('isVerify')
 			}
 		},
 		onReachBottom(){
@@ -234,5 +278,9 @@
 				}
 			}
 		}
+	}
+	.richText{
+		padding: 15rpx 3%;
+		view{line-height: 40rpx}
 	}
 </style>
